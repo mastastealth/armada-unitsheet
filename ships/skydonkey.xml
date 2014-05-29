@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ShipData>
+  <DisplayName>Siege</DisplayName>
+  <Flying>true</Flying>
+  <UsePhysics>false</UsePhysics>
+  <Speed>6</Speed>
+  <Friction>5</Friction>
+  <Health>5</Health>
+  <CollisionRadius>.7</CollisionRadius>
+  <VisibilityRange>10</VisibilityRange>
+  <Texture Path="Content/textures/ships" Name="skydonkey"/>
+  <Sprite FrameWidth="64" FrameHeight="64">
+    <Animations>
+      <Animation Name="idle" StartFrame="0" EndFrame="0"/>
+      <Animation Name="walk" StartFrame="0" EndFrame="0"/>
+    </Animations>
+  </Sprite>
+  <BehaviorUpdateTime>0.1</BehaviorUpdateTime>
+  <Weapons>
+    <Weapon>weapon_skydonkeyair</Weapon>
+    <Weapon>weapon_skydonkeyground</Weapon>
+  </Weapons>
+  <Behaviors>
+    <Attack AggroRange="8.5" AttackRange="5" TargetMotherships="true" TargetMothershipsLast="true" TargetFlying="true" TargetGround="false" WeaponIndex="0"/>
+    <Attack AggroRange="8.5" AttackRange="5" TargetMotherships="true" TargetMothershipsLast="true" TargetFlying="false" TargetGround="true" WeaponIndex="1"/>
+    <Formation TargetDistance="10000" DestinationTolerance="0.25" TargetWeapon="true"/>
+    <Idle/>
+  </Behaviors>
+  <Events>
+    <Event Type="OnTimer" Value="3">
+      <Response Type="Heal" Target="Self" Value="1"/>
+    </Event>
+    <Event Type="OnDeath">
+      <Response Type="CreateParticle" Target="Self" Data="UnitDeathEmitter"/>
+    </Event>
+  </Events>
+</ShipData>

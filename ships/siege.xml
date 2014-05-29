@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ShipData>
+  <DisplayName>Siege</DisplayName>
+  <Flying>false</Flying>
+  <UsePhysics>false</UsePhysics>
+  <Speed>3</Speed>
+  <Friction>5</Friction>
+  <Health>10</Health>
+  <CollisionRadius>.7</CollisionRadius>
+  <VisibilityRange>10</VisibilityRange>
+  <Texture Path="Content/textures/ships" Name="siege"/>
+  <Sprite FrameWidth="64" FrameHeight="64">
+    <Animations>
+      <Animation Name="idle" StartFrame="0" EndFrame="0"/>
+      <Animation Name="walk" StartFrame="0" EndFrame="0"/>
+    </Animations>
+  </Sprite>
+  <BehaviorUpdateTime>0.1</BehaviorUpdateTime>
+  <Weapons>
+    <Weapon>weapon_siegeball</Weapon>
+  </Weapons>
+  <Behaviors>
+    <Attack AggroRange="10" AttackRange="7" TargetMothershipsLast="true" TargetFlying="true" TargetGround="true"/>
+    <Formation TargetDistance="10000" DestinationTolerance="0.25" TargetWeapon="true"/>
+    <Idle/>
+  </Behaviors>
+  <Events>
+    <Event Type="OnDeath">
+      <Response Type="CreateParticle" Target="Self" Data="UnitDeathEmitter"/>
+    </Event>
+  </Events>
+</ShipData>

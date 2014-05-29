@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ShipData>
+  <DisplayName>Swarm</DisplayName>
+  <Flying>false</Flying>
+  <UsePhysics>false</UsePhysics>
+  <Speed>20</Speed>
+  <Friction>5</Friction>
+  <Health>1</Health>
+  <CollisionRadius>0.4</CollisionRadius>
+  <VisibilityRange>5</VisibilityRange>
+  <Texture Path="Content/textures/ships" Name="swarmturret"/>
+  <Sprite FrameWidth="16" FrameHeight="25">
+    <Animations>
+      <Animation Name="idle" StartFrame="0" EndFrame="0"/>
+      <Animation Name="walk" StartFrame="0" EndFrame="0"/>
+    </Animations>
+  </Sprite>
+  <BehaviorUpdateTime>0.1</BehaviorUpdateTime>
+  <Weapons>
+  </Weapons>
+  <Behaviors>
+    <Idle Priority="0"/>
+    <Attack Priority="1" TargetDistance="7" AttackDistance="0" TargetMothershipsLast="true" TargetFlying="false" TargetGround="true"/>
+  </Behaviors>
+  <Events>
+    <Event Type="OnCollision">
+      <Response Type="Damage" Target="AOE" Radius="1" Value="3"/>
+      <Response Type="Remove"/>
+    </Event>
+  </Events>
+</ShipData>

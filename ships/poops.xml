@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ShipData>
+  <DisplayName>Fighter</DisplayName>
+  <Flying>false</Flying>
+  <UsePhysics>false</UsePhysics>
+  <Speed>4</Speed>
+  <Friction>0</Friction>
+  <Health>1</Health>
+  <CollisionRadius>0.4</CollisionRadius>
+  <VisibilityRange>5</VisibilityRange>
+  <Texture Path="Content/textures/ships" Name="poops"/>
+  <Sprite FrameWidth="64" FrameHeight="80">
+    <Animations>
+      <Animation Name="idle" StartFrame="0" EndFrame="0"/>
+      <Animation Name="walk" StartFrame="1" EndFrame="3"/>
+    </Animations>
+  </Sprite>
+  <BehaviorUpdateTime>0.1</BehaviorUpdateTime>
+  <Weapons>
+  </Weapons>
+  <Behaviors>
+    <Attack AggroRange="7.5" AttackRange="0" TargetMothershipsLast="true" TargetFlying="true" TargetGround="true"/>
+    <Formation TargetDistance="10000" DestinationTolerance="0.25" TargetWeapon="true"/>
+    <Idle/>
+  </Behaviors>
+  <Events>
+    <Event Type="OnCollision">
+      <Response Type="Damage" Target="AOE" Radius="1" Value="3"/>
+      <Response Type="Remove"/>
+    </Event>
+  </Events>
+</ShipData>

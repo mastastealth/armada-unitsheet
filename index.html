@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Armada Units</title>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+	<style>
+		#units { margin: 50px auto; max-width: 80%; }
+	</style>
+</head>
+<body>
+	<table id="units" class="table table-striped">
+		<tbody>
+			<tr>
+				<th>Name</th>
+				<th>HP</th>
+				<th>ATK</th>
+				<th>Atk Spd</th>
+				<th>Range</th>
+				<th>Cost</th>
+				<th>Max</th>
+				<th>Build Time</th>
+				<th>U. Build Time</th>
+			</tr>
+		</tbody>
+	</table>
+
+	<script>
+		//Makes an asynch request, loading the getimages.php file
+        function callForUnits() {
+            //Create the request object
+            var httpReq = (window.XMLHttpRequest)?new XMLHttpRequest():new ActiveXObject("Microsoft.XMLHTTP");
+
+            //When it loads,
+            httpReq.onload = function() {
+                //Convert the result back into JSON
+                var result = JSON.parse(httpReq.responseText);
+                //Make table
+                printUnits(result);
+            }
+
+            //Request the page
+            try {
+                httpReq.open("GET", "getunits.php", true);
+                httpReq.send(null);
+            } catch(e) {
+                console.log(e);
+            }
+        }
+
+        function printUnits(arr) {
+        	for(var i=0;i<arr.length;i++){
+		        var obj = arr[i];
+
+		        var row = document.querySelector('#units tbody').appendChild( document.createElement('tr') );
+
+		        var name = row.appendChild( document.createElement('td') );
+		        name.textContent = obj.DisplayName;
+
+		        var hp = row.appendChild( document.createElement('td') );
+		        hp.textContent = obj.Health;
+
+		        // var atk = row.appendChild( document.createElement('td') );
+		        // atk.textContent = obj.DisplayName;
+
+		        // var aspd = row.appendChild( document.createElement('td') );
+		        // aspd.textContent = obj.DisplayName;
+
+		        // var rng = row.appendChild( document.createElement('td') );
+		        // rng.textContent = obj.DisplayName;
+
+		        // var cost = row.appendChild( document.createElement('td') );
+		        // cost.textContent = obj.DisplayName;
+
+		        // var max = row.appendChild( document.createElement('td') );
+		        // max.textContent = obj.DisplayName;
+
+		        // var bt = row.appendChild( document.createElement('td') );
+		        // bt.textContent = obj.DisplayName;
+
+		        // var ubt = row.appendChild( document.createElement('td') );
+		        // ubt.textContent = obj.DisplayName;
+		    }
+        }
+
+        callForUnits()
+	</script>
+</body>
+</html>
