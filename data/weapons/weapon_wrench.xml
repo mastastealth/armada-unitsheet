@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<WeaponData>
+  <DisplayName>Wrench</DisplayName>
+  <CastTime>1</CastTime>
+  <CoolDown>0</CoolDown>
+  <Range>0.75</Range>
+  <RequiresTarget>true</RequiresTarget>
+  <Events>
+    <Event Type="OnActivate">
+      <Response Type="Heal" Value="1" Target="Target"/>
+    </Event>
+  </Events>
+</WeaponData>

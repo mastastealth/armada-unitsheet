@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<StructureData>
+  <DisplayName>Observer</DisplayName>
+  <DisplayClass>Build</DisplayClass>
+  <Description>I SEE YOU!</Description>
+  <Texture Path="Content/textures/structures" Name="structure_observer"/>
+  <DeckEditorPriority>988</DeckEditorPriority>
+  <Sprite FrameWidth="58" FrameHeight="80">
+    <Animations>
+      <Animation Name="idle" StartFrame="0" EndFrame="0"/>
+    </Animations>
+  </Sprite>
+  <CollisionRadius>0.4</CollisionRadius>
+  <BlockMovement>false</BlockMovement>
+  <Health>100</Health>
+  <Tall>true</Tall>
+  <Detection>true</Detection>
+  <VisibilityRange>12</VisibilityRange>
+  <BuildTime>15</BuildTime>
+  <BuildCost>
+    <item key="Mineral" value="100"/>
+  </BuildCost>
+  <Behaviors/>
+  <Events>
+    <Event Type="OnTimer" Value="1">
+      <Response Type="CreateParticle" Data="ObserverPingEmitter"/>
+    </Event>
+      <Event Type="OnDeath">
+        <Response Type="CreateParticle" Target="Self" Data="StructureDeathEmitter"/>
+      </Event>
+  </Events>
+</StructureData>

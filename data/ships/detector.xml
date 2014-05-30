@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ShipData>
+  <DisplayName>Detector</DisplayName>
+  <Flying>true</Flying>
+  <UsePhysics>false</UsePhysics>
+  <Speed>3</Speed>
+  <Friction>5</Friction>
+  <Health>50</Health>
+  <Detection>true</Detection>
+  <CollisionRadius>.7</CollisionRadius>
+  <VisibilityRange>7</VisibilityRange>
+  <Texture Path="Content/textures/ships" Name="detector"/>
+  <Sprite FrameWidth="64" FrameHeight="31">
+    <Animations>
+      <Animation Name="idle" StartFrame="0" EndFrame="0"/>
+      <Animation Name="walk" StartFrame="0" EndFrame="0"/>
+    </Animations>
+  </Sprite>
+  <BehaviorUpdateTime>0.1</BehaviorUpdateTime>
+  <Weapons>
+    <Weapon>weapon_detector</Weapon>
+  </Weapons>
+  <Behaviors>
+    <Attack AggroRange="7.5" AttackRange="5" TargetMotherships="true" TargetMothershipsLast="true" TargetFlying="true" TargetGround="false" WeaponIndex="0"/>
+    <Formation TargetDistance="10000" DestinationTolerance="0.25" TargetWeapon="true"/>
+    <Idle/>
+  </Behaviors>
+  <Events>
+    <Event Type="OnDeath">
+      <Response Type="CreateParticle" Target="Self" Data="UnitDeathEmitter"/>
+    </Event>
+  </Events>
+</ShipData>

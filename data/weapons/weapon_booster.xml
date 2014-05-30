@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<WeaponData>
+  <DisplayName>Booster Rocket</DisplayName>
+  <CoolDown>0.25</CoolDown>
+  <Events>
+    <Event Type="OnActivate">
+      <Response Type="ImpulseForward" Value="1000"/>
+    </Event>
+  </Events>
+</WeaponData>

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<StructureData>
+  <DisplayName>Siege Donkeys</DisplayName>
+  <DisplayClass>Spawn</DisplayClass>
+  <Description>Donkeys be sieging, YEEE HAW!</Description>
+  <Texture Path="Content/textures/structures" Name="factory_siege"/>
+  <DeckEditorPriority>995</DeckEditorPriority>
+  <Sprite FrameWidth="64" FrameHeight="90">
+    <Animations>
+      <Animation Name="idle" StartFrame="0" EndFrame="0"/>
+    </Animations>
+  </Sprite>
+  <CollisionRadius>0.4</CollisionRadius>
+  <BlockMovement>false</BlockMovement>
+  <Health>40</Health>
+  <VisibilityRange>5</VisibilityRange>
+  <BuildTime>15</BuildTime>
+  <BuildCost>
+    <item key="Mineral" value="200"/>
+  </BuildCost>
+  <Behaviors>
+    <Production ProductionData="siege" ProductionTime="15" MaxSpawnedAtOnce="3">
+      <ProductionCost>
+        <item key="Mineral" value="50"/>
+      </ProductionCost>
+    </Production>
+  </Behaviors>
+  <Events>
+    <Event Type="OnDeath">
+      <Response Type="CreateParticle" Target="Self" Data="StructureDeathEmitter"/>
+    </Event>
+  </Events>
+</StructureData>

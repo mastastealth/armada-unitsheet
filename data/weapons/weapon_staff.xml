@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<WeaponData>
+  <DisplayName>Staff</DisplayName>
+  <ActiveTime>0.1</ActiveTime>
+  <CoolDown>0</CoolDown>
+  <Texture Path="Content/textures/gui" Name="pixel"/>
+  <Events>
+    <Event Type="OnActivate">
+      <Response Type="Rally"/>
+    </Event>
+    <Event Type="OnFinishActivating">
+      <Response Type="Rally"/>
+    </Event>
+  </Events>
+</WeaponData>

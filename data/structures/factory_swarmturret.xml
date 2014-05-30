@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<StructureData>
+  <DisplayName>Swarm Turret</DisplayName>
+  <DisplayClass>Build</DisplayClass>
+  <HideInDeckEditor>true</HideInDeckEditor>
+  <Texture Path="Content/textures/structures" Name="factory_swarmturret"/>
+  <Sprite FrameWidth="64" FrameHeight="90">
+    <Animations>
+      <Animation Name="idle" StartFrame="0" EndFrame="0"/>
+    </Animations>
+  </Sprite>
+  <CollisionRadius>0.4</CollisionRadius>
+  <BlockMovement>false</BlockMovement>
+  <Health>300</Health>
+  <VisibilityRange>10</VisibilityRange>
+  <BuildTime>30</BuildTime>
+  <BuildCost>
+    <item key="Mineral" value="150"/>
+  </BuildCost>
+  <Behaviors>
+    <Production ProductionData="swarmturret" ProductionTime="3" MaxSpawnedAtOnce="10">
+      <ProductionCost>
+        <item key="Mineral" value="0"/>
+      </ProductionCost>
+    </Production>
+  </Behaviors>
+</StructureData>

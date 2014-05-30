@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<WeaponData>
+  <DisplayName>Mine Defense</DisplayName>
+  <CastTime>0</CastTime>
+  <CoolDown>0.5</CoolDown>
+  <Events>
+    <Event Type="OnActivate">
+      <Response Type="FireBullet" Data="mineball"/>
+    </Event>
+  </Events>
+</WeaponData>

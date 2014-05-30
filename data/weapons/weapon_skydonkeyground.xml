@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<WeaponData>
+  <DisplayName>Sky Donkey Weapon</DisplayName>
+  <CastTime>0.2</CastTime>
+  <CoolDown>0.8</CoolDown>
+  <FreezeMovement>true</FreezeMovement>
+  <Events>
+    <Event Type="OnActivate">
+      <Response Type="FireBullet" Data="bullet_skydonkey"/>
+    </Event>
+  </Events>
+</WeaponData>

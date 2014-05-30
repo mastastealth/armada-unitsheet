@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ShipData>
+  <DisplayName>Drone</DisplayName>
+  <Flying>false</Flying>
+  <UsePhysics>false</UsePhysics>
+  <Speed>2</Speed>
+  <Friction>5</Friction>
+  <Health>20</Health>
+  <CollisionRadius>0.4</CollisionRadius>
+  <VisibilityRange>3</VisibilityRange>
+  <Cloaked>false</Cloaked>
+  <Detection>false</Detection>
+  <Texture Path="Content/textures/ships" Name="drone"/>
+  <Sprite FrameWidth="64" FrameHeight="100">
+    <Animations>
+      <Animation Name="idle" StartFrame="0" EndFrame="4" FrameTime="0.15"/>
+      <Animation Name="walk" StartFrame="0" EndFrame="4" FrameTime="0.15"/>
+    </Animations>
+  </Sprite>
+  <BehaviorUpdateTime>.1</BehaviorUpdateTime>
+  <Weapons>
+    <Weapon>weapon_drone</Weapon>
+    <Weapon>weapon_droneweapon</Weapon>
+  </Weapons>
+  <Behaviors>
+    <Attack TargetStaff="false" AggroRange="5" AttackRange="3" TargetMotherships="false" SpeedMultiplier="1" TargetMothershipsLast="true" TargetFlying="false" TargetGround="true" WeaponIndex="1"/>
+    <Formation TargetDistance="1" DestinationTolerance="2" TargetActiveWeapon="true" Sticky="true"/>
+    <CollectMinerals DestinationTolerance="0.75" TargetDistance="0.25"/>
+    <Formation TargetDistance="10000" DestinationTolerance="1" TargetInactiveWeapon="true"/>
+    <Attack AggroRange="7.5" AttackRange="3" TargetMotherships="true" SpeedMultiplier="1" TargetMothershipsLast="true" TargetFlying="false" TargetGround="true" WeaponIndex="1"/>
+    <Formation TargetDistance="10000" DestinationTolerance="1" TargetWeapon="true"/>
+    <Idle/>
+  </Behaviors>
+  <Events>
+    <Event Type="OnDeath">
+      <Response Type="CreateParticle" Target="Self" Data="UnitDeathEmitter"/>
+    </Event>
+  </Events>
+</ShipData>

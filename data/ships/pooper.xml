@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ShipData>
+  <DisplayName>Pooper</DisplayName>
+  <Flying>false</Flying>
+  <UsePhysics>false</UsePhysics>
+  <Speed>4</Speed>
+  <Friction>0</Friction>
+  <Health>250</Health>
+  <CollisionRadius>0.4</CollisionRadius>
+  <VisibilityRange>5</VisibilityRange>
+  <Texture Path="Content/textures/ships" Name="pooper"/>
+  <Sprite FrameWidth="64" FrameHeight="80">
+    <Animations>
+      <Animation Name="idle" StartFrame="0" EndFrame="0"/>
+      <Animation Name="walk" StartFrame="1" EndFrame="3"/>
+    </Animations>
+  </Sprite>
+  <BehaviorUpdateTime>0.1</BehaviorUpdateTime>
+  <Weapons>
+  </Weapons>
+  <Behaviors>
+    <Formation TargetDistance="10000" DestinationTolerance="0.25" TargetWeapon="true"/>
+    <Idle/>
+  </Behaviors>
+  <ActiveBehaviors>
+    <Production ProductionData="poops" ProductionTime="3" MaxSpawnedAtOnce="10">
+    </Production>
+  </ActiveBehaviors>
+  <Events>
+    <Event Type="OnDeath">
+      <Response Type="CreateParticle" Target="Self" Data="UnitDeathEmitter"/>
+    </Event>
+  </Events>
+</ShipData>

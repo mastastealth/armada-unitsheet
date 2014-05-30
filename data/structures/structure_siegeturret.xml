@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<StructureData>
+  <DisplayName>Siege Turret</DisplayName>
+  <DisplayClass>Build</DisplayClass>
+  <Description>Oh we shoot so far!</Description>
+  <Texture Path="Content/textures/structures" Name="structure_siegeturret"/>
+  <DeckEditorPriority>990</DeckEditorPriority>
+  <Sprite FrameWidth="64" FrameHeight="64">
+    <Animations>
+      <Animation Name="idle" StartFrame="0" EndFrame="0"/>
+    </Animations>
+  </Sprite>
+  <CollisionRadius>0.4</CollisionRadius>
+  <BlockMovement>false</BlockMovement>
+  <Health>200</Health>
+  <VisibilityRange>10</VisibilityRange>
+  <BuildTime>30</BuildTime>
+  <BuildCost>
+    <item key="Mineral" value="200"/>
+  </BuildCost>
+  <Behaviors>
+    <Attack AggroRange="10" AttackRange="10" TargetMothershipsLast="true" TargetFlying="false" TargetGround="true"/>
+  </Behaviors>
+  <Events>
+    <Event Type="OnDeath">
+      <Response Type="CreateParticle" Target="Self" Data="StructureDeathEmitter"/>
+    </Event>
+  </Events>
+  <Weapons>
+    <Weapon>weapon_siegeturret</Weapon>
+  </Weapons>
+  <Events>
+  </Events>
+</StructureData>

@@ -1,7 +1,7 @@
 <?php
 
     //The directory (relative to this file) that holds the images
-    $dir = "ships";
+    $dir = "data/ships";
 
     //This array will hold all the image addresses
     $result = array();

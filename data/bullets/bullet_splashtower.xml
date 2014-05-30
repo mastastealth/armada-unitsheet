@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+  <BulletData>
+    <DisplayName>Splash Tower</DisplayName>
+    <Collide>false</Collide>
+    <Homing>false</Homing>
+    <Distance>0</Distance>
+    <Speed>0</Speed>
+    <AllowFriendlyFire>false</AllowFriendlyFire>
+    <Events>
+      <Event Type="OnSpawn">
+        <Response Type="CreateParticle" Data="SplashTowerEmitter"/>
+        <Response Type="Damage" Range="6" Value="30" Target="AOE"/>
+        <Response Type="Remove"/>
+      </Event>
+    </Events>
+  </BulletData>

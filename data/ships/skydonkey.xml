@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ShipData>
+  <DisplayName>Sky Donkey</DisplayName>
+  <Flying>true</Flying>
+  <UsePhysics>false</UsePhysics>
+  <Speed>6</Speed>
+  <Friction>5</Friction>
+  <Health>60</Health>
+  <CollisionRadius>.7</CollisionRadius>
+  <VisibilityRange>10</VisibilityRange>
+  <Texture Path="Content/textures/ships" Name="skydonkey"/>
+  <Sprite FrameWidth="64" FrameHeight="64">
+    <Animations>
+      <Animation Name="idle" StartFrame="0" EndFrame="0"/>
+      <Animation Name="walk" StartFrame="0" EndFrame="0"/>
+    </Animations>
+  </Sprite>
+  <BehaviorUpdateTime>0.1</BehaviorUpdateTime>
+  <Weapons>
+    <Weapon>weapon_skydonkey</Weapon>
+  </Weapons>
+  <Behaviors>
+    <Attack AggroRange="8.5" AttackRange="6" TargetMotherships="true" TargetMothershipsLast="true" TargetFlying="true" TargetGround="true" WeaponIndex="0"/>
+    <Formation TargetDistance="10000" DestinationTolerance="0.25" TargetWeapon="true"/>
+    <Idle/>
+  </Behaviors>
+  <Events>
+    <Event Type="OnTimer" Value="2">
+      <Response Type="Heal" Target="Self" Value="10"/>
+    </Event>
+    <Event Type="OnDeath">
+      <Response Type="CreateParticle" Target="Self" Data="UnitDeathEmitter"/>
+    </Event>
+  </Events>
+</ShipData>

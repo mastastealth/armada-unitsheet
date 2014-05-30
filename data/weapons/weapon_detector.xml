@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<WeaponData>
+  <DisplayName>Machine Gun</DisplayName>
+  <CastTime>0.5</CastTime>
+  <CoolDown>1.5</CoolDown>
+  <FreezeMovement>true</FreezeMovement>
+  <Events>
+    <Event Type="OnActivate">
+      <Response Type="FireBullet" Data="bullet_detector"/>
+    </Event>
+  </Events>
+</WeaponData>

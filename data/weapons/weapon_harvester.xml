@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<WeaponData>
+  <DisplayName>Harvester</DisplayName>
+  <CoolDown>2</CoolDown>
+  <Range>0.75</Range>
+  <RequiresTarget>true</RequiresTarget>
+  <CastTime>1.5</CastTime>
+  <Events>
+    <Event Type="OnActivate">
+      <Response Type="Harvest" Value="10"/>
+    </Event>
+    <Event Type="OnCast">
+      <Response Type="CreateParticle" Data="HarvestMineral" Target="Target"/>
+  </Event>
+  </Events>
+</WeaponData>

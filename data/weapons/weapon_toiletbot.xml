@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<WeaponData>
+  <DisplayName>Toiletbot</DisplayName>
+  <CastTime>0.5</CastTime>
+  <CoolDown>1</CoolDown>
+  <FreezeMovement>true</FreezeMovement>
+  <Events>
+    <Event Type="OnActivate">
+      <Response Type="Damage" Target="AOE" Value="3" Radius="2"/>
+      <Response Type="CreateParticle" Data="Explosion"/>
+      <Response Type="CreateParticle" Data="ToiletbotEmitter"/>
+    </Event>
+  </Events>
+</WeaponData>

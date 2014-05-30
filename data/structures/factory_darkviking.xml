@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<StructureData>
+  <DisplayName>Dark Vikings</DisplayName>
+  <DisplayClass>Spawn</DisplayClass>
+  <Description>Where you is? CANNOT SEE!</Description>
+  <Texture Path="Content/textures/structures" Name="factory_darkviking"/>
+  <DeckEditorPriority>992</DeckEditorPriority>
+  <Sprite FrameWidth="64" FrameHeight="90">
+    <Animations>
+      <Animation Name="idle" StartFrame="0" EndFrame="0"/>
+    </Animations>
+  </Sprite>
+  <CollisionRadius>0.4</CollisionRadius>
+  <BlockMovement>false</BlockMovement>
+  <Health>400</Health>
+  <VisibilityRange>5</VisibilityRange>
+  <BuildTime>20</BuildTime>
+  <BuildCost>
+    <item key="Mineral" value="200"/>
+  </BuildCost>
+  <Behaviors>
+    <Production ProductionData="darkviking" ProductionTime="15" MaxSpawnedAtOnce="3">
+      <ProductionCost>
+        <item key="Mineral" value="50"/>
+      </ProductionCost>
+    </Production>
+  </Behaviors>
+  <Events>
+    <Event Type="OnDeath">
+      <Response Type="CreateParticle" Target="Self" Data="StructureDeathEmitter"/>
+    </Event>
+  </Events>
+</StructureData>

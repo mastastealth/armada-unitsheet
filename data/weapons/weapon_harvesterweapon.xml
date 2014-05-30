@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<WeaponData>
+  <DisplayName>Harvester Weapon</DisplayName>
+  <CastTime>0.25</CastTime>
+  <CoolDown>0.75</CoolDown>
+  <FreezeMovement>true</FreezeMovement>
+  <Events>
+    <Event Type="OnActivate">
+      <Response Type="FireBullet" Data="bullet_harvesterweapon"/>
+    </Event>
+  </Events>
+</WeaponData>
