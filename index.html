@@ -12,12 +12,15 @@
 
 	<style>
 		body { padding: 20px; }
+		h2, footer { text-align: center; }
 		#units { margin: 0 auto; }
+		td:not(:first-child) { text-align: center; vertical-align: middle; }
 		tr, td { position: relative; }
-		tr td:after { content: attr(data-unit); font-size: 10px; }
+		tr td:after { content: attr(data-label); color: #999; display: block; font-size: 10px; }
 	</style>
 </head>
 <body>
+	<h2>Armada Units</h2>
 	<!-- Structures Points to Ships which > Weapons > Bullets -->
 	<table id="units" class="table table-bordered table-striped">
 		<tbody>
@@ -30,14 +33,17 @@
 				<th>Cost</th>
 				<th>Max</th>
 				<th>Build Time</th>
-				<th>U. Build Time</th>
+				<th>Prod. Time</th>
 			</tr>
 		</tbody>
 	</table>
 
 	<footer>
-		<script>document.write(process.versions['atom-shell'])</script>
-		<script>document.write(process.versions['node'])</script>
+		<h5>
+			<script>document.write(process.versions['atom-shell'])</script>
+			-
+			<script>document.write(process.versions['node'])</script>
+		</h5>
 	</footer>
 
 	<script src="app.js"></script>

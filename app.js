@@ -42,33 +42,46 @@ console.log('-------------------------');
 
 var ships, structures, weapons, bullets;
 
+function editXML(result,file) {
+    var obj = result;
+    var builder = new xml2js.Builder();
+    var xml = builder.buildObject(obj);
+
+    // var child = t.parentNode;
+    // var i = -1;
+    // while( (child = child.previousSibling) != null ) 
+    //   i++;
+
+    fs.writeFile(file, xml, function (err) {
+        if (err) throw err;
+        console.log('Saved '+file);
+    });
+}
+
 var ships = walk('data/ships', function(error) {
     if (error) { throw error; } 
     else {
         unitList = [];
 
-        for(var i=0;i<ships.length;i++){
-
+        ships.forEach(function(ufile) {
+            unitList.push(ufile);
             var parser = new xml2js.Parser();
-            unitList.push(ships[i]);
 
-            fs.readFile(__dirname + '/' + ships[i], function(err, data) {
+            fs.readFile(__dirname + '/' + ufile, function(err, data) {
                 parser.parseString(data, function (err, result) {
                     //console.dir( JSON.stringify(result) );
                     var row = document.querySelector('#units tbody').appendChild( document.createElement('tr') );
-                    //row.setAttribute( 'data-unit', udir.replace('data/ships/','').replace('.xml','') );
+                    row.setAttribute( 'data-unit', ufile.replace('data/ships/','').replace('.xml','') );
 
                     for(var i=0;i<9;i++){
                         row.appendChild( document.createElement('td') );
                     }
 
                     var name = row.querySelector('td:nth-child(1)');
-
                     name.textContent = result.ShipData.DisplayName;
                     name.setAttribute('contenteditable','true');
-                    name.addEventListener('blur', function() {
-                        
-                    });
+                    name.setAttribute( 'data-label', ufile.replace('data/ships/','').replace('.xml','') );
+                    //name.addEventListener('blur', function() { });
 
                     var hp = row.querySelector('td:nth-child(2)');
                     hp.textContent = result.ShipData.Health;
@@ -76,28 +89,14 @@ var ships = walk('data/ships', function(error) {
 
                     hp.addEventListener('blur', function() {
                         result.ShipData.Health = hp.textContent;
-                        var obj = result;
-                        var builder = new xml2js.Builder();
-                        var xml = builder.buildObject(obj);
-
-                        var child = this.parentNode;
-                        var i = -1;
-                        while( (child = child.previousSibling) != null ) 
-                          i++;
-
-                        var file = unitList[i-2];
-
-                        fs.writeFile(file, xml, function (err) {
-                            if (err) throw err;
-                            console.log('It\'s saved!');
-                        });
+                        editXML(result,ufile);
                     });
 
                     //console.log(result.ShipData.DisplayName);
                 });
             });
             
-        }
+        });
         //console.log( ships );
     }
 });
@@ -105,25 +104,49 @@ var ships = walk('data/ships', function(error) {
 var structures = walk('data/structures', function(error) {
     if (error) { throw error; } 
     else {
-        for(var i=0;i<structures.length;i++){
+        structureList = [];
+
+        structures.forEach(function(sfile) {
             var parser = new xml2js.Parser();
-            fs.readFile(__dirname + '/' + structures[i], function(err, data) {
+
+            fs.readFile(__dirname + '/' + sfile, function(err, data) {
                 parser.parseString(data, function (err, result) {
                     //console.dir( JSON.stringify(result) );
-                    // var row = document.querySelector('#units tbody').appendChild( document.createElement('tr') );
-                    // var name = row.appendChild( document.createElement('td') );
+                    //console.log( JSON.stringify(result.StructureData.Behaviors[0].Production[0]) );
 
-                    // name.textContent = result.ShipData.DisplayName;
-                    // name.setAttribute('contenteditable','true');
+                    if ( document.querySelector('tr[data-unit='+result.StructureData.Behaviors[0].Production[0]['$'].ProductionData+'] td:nth-child(6)')) {
+                        structureList.push(sfile);
+                        console.log('Sfile is: '+sfile);
 
-                    // var hp = row.appendChild( document.createElement('td') );
-                    // hp.textContent = result.ShipData.Health;
+                        var p = result.StructureData.Behaviors[0].Production[0];
+                        var label = p['$'].ProductionData;
 
-                    //console.log(result.ShipData.DisplayName);
+                        // Cost
+                        var cost = document.querySelector('tr[data-unit='+label+'] td:nth-child(6)');
+                        cost.textContent = p.ProductionCost[0].item[0]['$'].value;
+                        cost.setAttribute('contenteditable','true');
+
+                        cost.addEventListener('blur', function() {
+                            result.StructureData.Behaviors[0].Production[0].ProductionCost[0].item[0]['$'].value = cost.textContent;
+                            editXML(result,sfile);
+                        });
+
+                        // Max
+                        var max = document.querySelector('tr[data-unit='+label+'] td:nth-child(7)');
+                        max.textContent = p['$'].MaxSpawnedAtOnce;
+
+                        // Build Time
+                        var bt = document.querySelector('tr[data-unit='+label+'] td:nth-child(8)');
+                        bt.textContent = result.StructureData.BuildTime;
+
+                        // Unit Build Time
+                        var pt = document.querySelector('tr[data-unit='+label+'] td:nth-child(9)');
+                        pt.textContent = p['$'].ProductionTime;
+                    }
+
                 });
             });
-        }
-        console.log( structures );
+        });
     }
 });
 
@@ -137,15 +160,3 @@ var structures = walk('data/structures', function(error) {
 
 // var rng = row.appendChild( document.createElement('td') );
 // rng.textContent = obj.DisplayName;
-
-// var cost = row.appendChild( document.createElement('td') );
-// cost.textContent = obj.DisplayName;
-
-// var max = row.appendChild( document.createElement('td') );
-// max.textContent = obj.DisplayName;
-
-// var bt = row.appendChild( document.createElement('td') );
-// bt.textContent = obj.DisplayName;
-
-// var ubt = row.appendChild( document.createElement('td') );
-// ubt.textContent = obj.DisplayName;
