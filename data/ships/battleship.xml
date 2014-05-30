@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ShipData>
   <DisplayName>Battleship</DisplayName>
   <Flying>true</Flying>
   <UsePhysics>false</UsePhysics>
   <Speed>2</Speed>
   <Friction>0</Friction>
-  <Health>500</Health>
+  <Health>400</Health>
   <CollisionRadius>2</CollisionRadius>
   <VisibilityRange>10</VisibilityRange>
   <Texture Path="Content/textures/ships" Name="battleship"/>
@@ -22,7 +22,7 @@
   <Behaviors>
     <Attack AggroRange="8.5" AttackRange="6" TargetMothershipsLast="true" TargetFlying="true" TargetGround="true"/>
     <Formation TargetDistance="10000" DestinationTolerance="1" TargetWeapon="true"/>
-    <Idle/>
+    <Idle></Idle>
   </Behaviors>
   <Events>
     <Event Type="OnDeath">
