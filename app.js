@@ -150,6 +150,41 @@ var structures = walk('data/structures', function(error) {
     }
 });
 
+var weapons = walk('data/weapons', function(error) {
+    if (error) { throw error; } 
+    else {
+        weaponList = [];
+
+        weapons.forEach(function(wfile) {
+            weaponList.push(wfile);
+            var parser = new xml2js.Parser();
+
+            fs.readFile(__dirname + '/' + wfile, function(err, data) {
+                parser.parseString(data, function (err, result) {
+                    console.dir( JSON.stringify(result) );
+                    // if ( orange ) {
+                    //     weaponList.push(wfile);
+                    //     console.log('Wfile is: '+wfile);
+
+                    //     var p = result.StructureData.Behaviors[0].Production[0];
+                    //     var label = ;
+
+                    //     // Cast Time
+                    //     // var cast = document.querySelector('tr[data-unit='+label+'] td:nth-child(3)');
+                    //     // cast.textContent = p.ProductionCost[0].item[0]['$'].value;
+                    //     // cast.setAttribute('contenteditable','true');
+
+                    //     // cost.addEventListener('blur', function() {
+                    //     //     result.StructureData.Behaviors[0].Production[0].ProductionCost[0].item[0]['$'].value = cost.textContent;
+                    //     //     editXML(result,sfile);
+                    //     // });                        
+                    // }
+                });
+            });
+        });
+    }
+});
+
 // Parse XML to JSON
 
 // var atk = row.appendChild( document.createElement('td') );
