@@ -141,6 +141,7 @@ var structures = walk('data/structures', function(error) {
                         // Max
                         var max = document.querySelector('tr[data-unit='+label+'] td:nth-child(7)');
                         max.textContent = p['$'].MaxSpawnedAtOnce;
+                        max.setAttribute('contenteditable','true');
 
                         max.addEventListener('blur', function() {
                             result.StructureData.Behaviors[0].Production[0].MaxSpawnedAtOnce = cost.textContent;
@@ -150,6 +151,7 @@ var structures = walk('data/structures', function(error) {
                         // Build Time
                         var bt = document.querySelector('tr[data-unit='+label+'] td:nth-child(8)');
                         bt.textContent = result.StructureData.BuildTime;
+                        bt.setAttribute('contenteditable','true');
 
                         bt.addEventListener('blur', function() {
                             result.StructureData.BuildTime = cost.textContent;
@@ -159,6 +161,7 @@ var structures = walk('data/structures', function(error) {
                         // Unit Build Time
                         var pt = document.querySelector('tr[data-unit='+label+'] td:nth-child(9)');
                         pt.textContent = p['$'].ProductionTime;
+                        pt.setAttribute('contenteditable','true');
 
                         pt.addEventListener('blur', function() {
                             result.StructureData.Behaviors[0].Production[0].ProductionTime = cost.textContent;
@@ -183,7 +186,7 @@ var weapons = walk('data/weapons', function(error) {
 
             fs.readFile(__dirname + '/' + wfile, function(err, data) {
                 parser.parseString(data, function (err, result) {
-                    console.dir( JSON.stringify(result) );
+                    //console.dir( JSON.stringify(result) );
                     var neww = wfile.replace('data/weapons/','').replace('.xml','');
 
                     if ( wlist.indexOf(neww) != -1 ) {
