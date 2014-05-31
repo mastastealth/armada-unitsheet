@@ -40,7 +40,8 @@ console.log('-------------------------');
 console.log('processing...');
 console.log('-------------------------');
 
-var ships, structures, weapons, bullets;
+var ships, structures, weapons;
+var wlist = [];
 
 function editXML(result,file) {
     var obj = result;
@@ -92,6 +93,12 @@ var ships = walk('data/ships', function(error) {
                         editXML(result,ufile);
                     });
 
+                    //console.log( result.ShipData.Weapons[0].Weapon );
+                    if (result.ShipData.Weapons[0].Weapon) {
+                        wlist.push( result.ShipData.Weapons[0].Weapon.toString() );
+                        row.setAttribute( 'data-weapon', result.ShipData.Weapons[0].Weapon.toString() );
+                    } else { console.log('Ahh!?'); }
+
                     //console.log(result.ShipData.DisplayName);
                 });
             });
@@ -116,7 +123,7 @@ var structures = walk('data/structures', function(error) {
 
                     if ( document.querySelector('tr[data-unit='+result.StructureData.Behaviors[0].Production[0]['$'].ProductionData+'] td:nth-child(6)')) {
                         structureList.push(sfile);
-                        console.log('Sfile is: '+sfile);
+                        //console.log('Sfile is: '+sfile);
 
                         var p = result.StructureData.Behaviors[0].Production[0];
                         var label = p['$'].ProductionData;
@@ -135,13 +142,28 @@ var structures = walk('data/structures', function(error) {
                         var max = document.querySelector('tr[data-unit='+label+'] td:nth-child(7)');
                         max.textContent = p['$'].MaxSpawnedAtOnce;
 
+                        max.addEventListener('blur', function() {
+                            result.StructureData.Behaviors[0].Production[0].MaxSpawnedAtOnce = cost.textContent;
+                            editXML(result,sfile);
+                        });
+
                         // Build Time
                         var bt = document.querySelector('tr[data-unit='+label+'] td:nth-child(8)');
                         bt.textContent = result.StructureData.BuildTime;
 
+                        bt.addEventListener('blur', function() {
+                            result.StructureData.BuildTime = cost.textContent;
+                            editXML(result,sfile);
+                        });
+
                         // Unit Build Time
                         var pt = document.querySelector('tr[data-unit='+label+'] td:nth-child(9)');
                         pt.textContent = p['$'].ProductionTime;
+
+                        pt.addEventListener('blur', function() {
+                            result.StructureData.Behaviors[0].Production[0].ProductionTime = cost.textContent;
+                            editXML(result,sfile);
+                        });
                     }
 
                 });
@@ -162,26 +184,37 @@ var weapons = walk('data/weapons', function(error) {
             fs.readFile(__dirname + '/' + wfile, function(err, data) {
                 parser.parseString(data, function (err, result) {
                     console.dir( JSON.stringify(result) );
-                    // if ( orange ) {
-                    //     weaponList.push(wfile);
-                    //     console.log('Wfile is: '+wfile);
+                    var neww = wfile.replace('data/weapons/','').replace('.xml','');
 
-                    //     var p = result.StructureData.Behaviors[0].Production[0];
-                    //     var label = ;
+                    if ( wlist.indexOf(neww) != -1 ) {
+                        weaponList.push(wfile);
+                        console.log('Wfile is: '+wfile);
 
-                    //     // Cast Time
-                    //     // var cast = document.querySelector('tr[data-unit='+label+'] td:nth-child(3)');
-                    //     // cast.textContent = p.ProductionCost[0].item[0]['$'].value;
-                    //     // cast.setAttribute('contenteditable','true');
+                        // Cast Time
+                        var cast = document.querySelector('tr[data-weapon='+neww+'] td:nth-child(3)');
+                        cast.textContent = result.WeaponData.CastTime[0];
+                        cast.setAttribute('contenteditable','true');
 
-                    //     // cost.addEventListener('blur', function() {
-                    //     //     result.StructureData.Behaviors[0].Production[0].ProductionCost[0].item[0]['$'].value = cost.textContent;
-                    //     //     editXML(result,sfile);
-                    //     // });                        
-                    // }
+                        cast.addEventListener('blur', function() {
+                            result.WeaponData.CastTime[0] = cast.textContent;
+                            editXML(result,wfile);
+                        });
+
+                        // Cool Down
+                        var cool = document.querySelector('tr[data-weapon='+neww+'] td:nth-child(4)');
+                        cool.textContent = result.WeaponData.CoolDown[0];
+                        cool.setAttribute('contenteditable','true');
+
+                        cool.addEventListener('blur', function() {
+                            result.WeaponData.CoolDown[0] = cost.textContent;
+                            editXML(result,wfile);
+                        });                        
+                    }
                 });
             });
         });
+
+        console.log( 'WEAPON LIST: '+wlist );
     }
 });
 
