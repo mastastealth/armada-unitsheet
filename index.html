@@ -13,10 +13,18 @@
 	<style>
 		body { padding: 20px; }
 		h2, footer { text-align: center; }
+		h5 { color: #999; font-size: 10px; }
 		#units { margin: 0 auto; }
+		td { opacity: 1; -webkit-transition: all 0.3s; }
+		td:empty { opacity: 0; }
 		td:not(:first-child) { text-align: center; vertical-align: middle; }
 		tr, td { position: relative; }
 		tr td:after { content: attr(data-label); color: #999; display: block; font-size: 10px; }
+		tr { -webkit-animation: slideIn 0.3s forwards; }
+		@-webkit-keyframes slideIn {
+			from { opacity: 0; -webkit-transform: translate(100%,0); }
+			to { opacity: 1; -webkit-transform: translate(0%,0); }
+		}
 	</style>
 </head>
 <body>
@@ -40,9 +48,9 @@
 
 	<footer>
 		<h5>
-			<script>document.write(process.versions['atom-shell'])</script>
+			<script>document.write('Atom Shell: '+process.versions['atom-shell'])</script>
 			-
-			<script>document.write(process.versions['node'])</script>
+			<script>document.write('Node: '+process.versions['node'])</script>
 		</h5>
 	</footer>
 

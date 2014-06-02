@@ -1,5 +1,6 @@
 var app = require('app');  // Module to control application life.
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
+var dialog = require('dialog');
 
 // Report crashes to our server.
 require('crash-reporter').start();
@@ -22,6 +23,12 @@ app.on('ready', function() {
 
   // and load the index.html of the app.
   mainWindow.loadUrl('file://' + __dirname + '/index.html');
+
+  dialog.showOpenDialog( { properties: [ 'openDirectory' ]}, function(filenames) {
+    mainWindow.webContents.on('did-finish-load', function() {
+      mainWindow.webContents.send('dir', filenames[0] );
+    });
+  });
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {
