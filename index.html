@@ -11,40 +11,152 @@
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
 
 	<style>
+		* { box-sizing: border-box; }
 		body { padding: 20px; }
 		h2, footer { text-align: center; }
 		h5 { color: #999; font-size: 10px; }
-		#units { margin: 0 auto; }
-		td { opacity: 1; -webkit-transition: all 0.3s; }
-		td:empty { opacity: 0; }
-		td:not(:first-child) { text-align: center; vertical-align: middle; }
-		tr, td { position: relative; }
-		tr td:after { content: attr(data-label); color: #999; display: block; font-size: 10px; }
-		tr { -webkit-animation: slideIn 0.3s forwards; }
+
+		.alertList { 
+			margin: 0;
+			list-style: none; padding: 0; 
+			position: fixed; bottom: 10px; left: 10px; 
+			width: 100%; z-index: 1; 
+		}
+
+		.alertList li.alert { opacity: 0; -webkit-transition: all 0.4s; }
+			.alertList li.alert.active { opacity: 1;  }
+
+		#units { 
+			align-content: space-between; 
+			display: flex; 
+			flex-wrap: wrap; 
+			margin: 0 auto; 
+		}
+			#units section { 
+				-webkit-animation: slideIn 0.3s forwards; 
+				border: 1px solid #999; 
+				box-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+				display: flex;
+				flex-direction: column;
+				margin: 0 10px 20px; 
+				overflow: hidden;
+				padding-bottom: 15px;
+				-webkit-transition: all 0.4s;
+				width: -webkit-calc(33% - 20px);
+			}
+				#units section:hover {
+					background: #EEE;
+					box-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+				}
+					#units section:hover > div:first-child { background: #4285F4; }
+
+			#units section div { padding: 5px; position: relative; }
+
+				#units section > div:first-child { 
+					background: #0074D9;
+					color: white;
+					font-size: 18px;
+					padding-bottom: 20px;
+					text-align: center;
+					-webkit-transition: all 0.4s;
+					z-index: 1;
+				}
+
+					#units section div:first-child i { 
+						background-color: #333; 
+						border: 3px solid white;
+						border-radius: 50%; 
+						display: block;
+						margin-left: -16px; position: absolute;
+						height: 38px; width: 38px; 
+						bottom: -16px; left: 50%;
+					}
+
+				#units section .stats { font-size: 16px; padding: 10px 0; text-align: center; }
+				#units section .weapons > div {
+					background: white;
+					border: 1px solid #CCC;
+					box-shadow: 1px 1px 1px rgba(0,0,0,0.25);
+					font-size: 12px;
+					padding: 5px;
+				}
+					#units section .weapons span {
+						background: #FF851B;
+						color: white;
+						display: block;
+						text-align: left;
+					}
+						#units section .weapons .dmg:not(:empty):before { content: 'Damage: '; font-weight: bold; }
+
+
+				#units section .extra { }
+					#units section .extra p { padding: 0 5px; }
+					#units section .extra p:nth-child(odd) {
+						background: rgba(0,0,0,0.1);
+						line-height: 140%;
+						margin-bottom: 0;
+						
+					}
+					#units section .extra p:hover { background: #333; color: white; }
+
+
+			#units h4 { color: white; font-size: 18px; }
+			#units h4:after { content: attr(data-label); color: #DDD; display: block; font-size: 10px; }
+
+			#units section span { 
+				border-radius: 4px; cursor: pointer; 
+				display: inline-block; padding: 4px; 
+				-webkit-transition: all 0.4s;
+			}
+				#units section span:hover { background: #333; }
+
+			#units section .hp { 
+				background: #2ECC40; 
+				border-radius: 5px 0 0 5px;
+				color: white; 
+				padding: 5px;
+			}
+				#units section .hp:before { content: 'HP: '; font-weight: bold; }
+				#units section .hp:only-of-type { border-radius: 5px; }
+
+			#units section .cost { 
+				background: #3D9970; 
+				border-radius:  0 5px 5px 0;
+				color: white; 
+				padding: 5px;
+			}
+				#units section .cost:before { content: 'Cost: '; font-weight: bold; }
+
+			#units section .max { 
+				color: #FC0; font-weight: bold; position: absolute; 
+				top: 4px; right: 4px; font-size: 18px; 
+			}
+				#units section .max:hover { background: #333;}
+				#units section .max:hover:before { content: 'Max: '; }
+
+			#units section .cool:before { content: 'Cool Down: '; font-weight: bold; }
+			#units section .cast:before { content: 'Cast Time: '; font-weight: bold; }
+			#units section .bt:before { content: 'Build Time: '; font-weight: bold; }
+			#units section .pt:before { content: 'Prod. Time: '; font-weight: bold; }
+
+			#units section .dmg[data-bullet]:after { color: #B74B16; content: ' (' attr(data-bullet) ')' }
+
 		@-webkit-keyframes slideIn {
 			from { opacity: 0; -webkit-transform: translate(100%,0); }
 			to { opacity: 1; -webkit-transform: translate(0%,0); }
 		}
+
+
 	</style>
 </head>
 <body>
 	<h2>Armada Units</h2>
+
+	<ul class="alertList"></ul>
 	<!-- Structures Points to Ships which > Weapons > Bullets -->
-	<table id="units" class="table table-bordered table-striped">
-		<tbody>
-			<tr>
-				<th>Name</th>
-				<th>HP</th>
-				<th>Cast Time</th>
-				<th>Cool Down</th>
-				<th>Range</th>
-				<th>Cost</th>
-				<th>Max</th>
-				<th>Build Time</th>
-				<th>Prod. Time</th>
-			</tr>
-		</tbody>
-	</table>
+	<div id="units">
+		
+	</div>
 
 	<footer>
 		<h5>

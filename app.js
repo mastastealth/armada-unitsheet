@@ -2,6 +2,12 @@ var fs = require('fs'),
     xml2js = require('xml2js'),
     path = require('path');
 
+if ( typeof String.prototype.endsWith != 'function' ) {
+  String.prototype.endsWith = function( str ) {
+    return str.length > 0 && this.substring( this.length - str.length, this.length ) === str;
+  }
+};
+
 require('ipc').on('dir', function(msg) {
     console.log('-------------------------');
     console.log('processing directory '+msg);
@@ -12,16 +18,27 @@ require('ipc').on('dir', function(msg) {
 
 function initEditor(contentDir) {
     var contentDir = contentDir.replace(/\\/g, '/');
-    var ships, structures, weapons;
+    var relDir;
+
+    if (__dirname.endsWith('/app')) {
+        relDir = path.relative(__dirname.replace('/app',''),contentDir);
+        relDir = relDir.replace(/\\/g, '/');
+    } else {
+        relDir = path.relative(__dirname,contentDir);
+        relDir = relDir.replace(/\\/g, '/');
+    }
+    console.log( 'Relative path should be: '+relDir );
+
+    var ships, structures, weapons, bullets;
     var wlist = [];
 
     // Iteration
     var walk = function (dir, done) {
         var fileList = [];
-        var relDir = path.relative(__dirname,contentDir);
+        
         //console.log(__dirname);
         //console.log(contentDir);
-        console.log( 'Relative path should be: '+relDir );
+        //console.log( 'Relative path should be: '+relDir );
 
         fs.readdir(relDir+dir, function (error, list) {
             if (error) { return done(error); }
@@ -43,7 +60,7 @@ function initEditor(contentDir) {
                     } else {
                         // do stuff to file here
                         fileList.push(file);
-                        console.log(file);
+                        //console.log(file);
                         next();
                     }
                 });
@@ -53,6 +70,8 @@ function initEditor(contentDir) {
         return fileList;
     };
 
+    // Edits the XML file. result is the XML blob, file is the path to the
+    // file that is going to be overwritten
     function editXML(result,file) {
         var obj = result;
         var builder = new xml2js.Builder();
@@ -60,11 +79,18 @@ function initEditor(contentDir) {
 
         fs.writeFile(file, xml, function (err) {
             if (err) throw err;
+
+            var alert = document.querySelector('.alertList').appendChild( document.createElement('li') );
+            alert.classList.add('alert','alert-success');
+            window.setTimeout( function() { alert.classList.add('active'); }, 50);
+            alert.innerHTML = '<strong>Saved</strong> '+file;
+            window.setTimeout( function() { alert.classList.remove('active'); }, 2000);
+            window.setTimeout( function() { alert.remove(); }, 2400);
             console.log('Saved '+file);
         });
     }
 
-    var ships = walk('/data/ships', function(error) {
+    ships = walk('/data/ships', function(error) {
         if (error) { throw error; } 
         else {
             unitList = [];
@@ -72,27 +98,35 @@ function initEditor(contentDir) {
             ships.forEach(function(ufile) {
                 unitList.push(ufile);
                 var parser = new xml2js.Parser();
-                var relDir = path.relative(__dirname,contentDir);
-                relDir = relDir.replace(/\\/g, '/');
-                console.log(relDir);
                 
                 fs.readFile(ufile, function(err, data) {
                     parser.parseString(data, function (err, result) {
                         //console.dir( JSON.stringify(result) );
-                        var row = document.querySelector('#units tbody').appendChild( document.createElement('tr') );
+                        var row = document.querySelector('#units').appendChild( document.createElement('section') );
                         row.setAttribute( 'data-unit', ufile.replace(relDir+'/data/ships/','').replace('.xml','') );
 
-                        for(var i=0;i<9;i++){
-                            row.appendChild( document.createElement('td') );
+                        for(var i=0;i<4;i++){
+                            row.appendChild( document.createElement('div') );
                         }
 
-                        var name = row.querySelector('td:nth-child(1)');
+                        var uinfo = row.querySelector('div:first-child');
+                        row.querySelector('div:nth-child(2)').classList.add('stats');
+                        row.querySelector('div:nth-child(3)').classList.add('weapons');
+                        row.querySelector('div:last-child').classList.add('extra');
+
+                        var icon = uinfo.appendChild( document.createElement('i') );
+                        icon.style.backgroundImage = 'url('+relDir+'/textures/ships/'+result.ShipData.Texture[0]['$'].Name + '.png)';
+                        icon.style.backgroundSize = '32px auto';
+
+                        var name = uinfo.appendChild( document.createElement('h4') );
                         name.textContent = result.ShipData.DisplayName;
-                        name.setAttribute('contenteditable','true');
+                        //name.setAttribute('contenteditable','true');
                         name.setAttribute( 'data-label', ufile.replace(relDir+'/data/ships/','').replace('.xml','') );
+
                         //name.addEventListener('blur', function() { });
 
-                        var hp = row.querySelector('td:nth-child(2)');
+                        var hp = row.querySelector('div:nth-child(2)').appendChild( document.createElement('span') );
+                        hp.classList.add('hp');
                         hp.textContent = result.ShipData.Health;
                         hp.setAttribute('contenteditable','true');
 
@@ -105,7 +139,7 @@ function initEditor(contentDir) {
                         if (result.ShipData.Weapons[0].Weapon) {
                             wlist.push( result.ShipData.Weapons[0].Weapon.toString() );
                             row.setAttribute( 'data-weapon', result.ShipData.Weapons[0].Weapon.toString() );
-                        } else { console.log('Ahh!?'); }
+                        } else { console.log('No Weapon/Multiple Weapons'); }
 
                         //console.log(result.ShipData.DisplayName);
                     });
@@ -116,7 +150,7 @@ function initEditor(contentDir) {
         }
     });
 
-    var structures = walk('/data/structures', function(error) {
+    structures = walk('/data/structures', function(error) {
         if (error) { throw error; } 
         else {
             structureList = [];
@@ -129,7 +163,8 @@ function initEditor(contentDir) {
                         //console.dir( JSON.stringify(result) );
                         //console.log( JSON.stringify(result.StructureData.Behaviors[0].Production[0]) );
 
-                        if ( document.querySelector('tr[data-unit='+result.StructureData.Behaviors[0].Production[0]['$'].ProductionData+'] td:nth-child(6)')) {
+                        if ( document.querySelector('section[data-unit='+result.StructureData.Behaviors[0].Production[0]['$'].ProductionData+'] .stats')) {
+                            
                             structureList.push(sfile);
                             //console.log('Sfile is: '+sfile);
 
@@ -137,42 +172,50 @@ function initEditor(contentDir) {
                             var label = p['$'].ProductionData;
 
                             // Cost
-                            var cost = document.querySelector('tr[data-unit='+label+'] td:nth-child(6)');
+                            
+                            var cost = document.querySelector('section[data-unit='+label+'] .stats').appendChild( document.createElement('span') );
+                            cost.classList.add('cost');
                             cost.textContent = p.ProductionCost[0].item[0]['$'].value;
                             cost.setAttribute('contenteditable','true');
 
                             cost.addEventListener('blur', function() {
-                                result.StructureData.Behaviors[0].Production[0].ProductionCost[0].item[0]['$'].value = cost.textContent;
+                                p.ProductionCost[0].item[0]['$'].value = cost.textContent;
                                 editXML(result,sfile);
                             });
-
+                            
                             // Max
-                            var max = document.querySelector('tr[data-unit='+label+'] td:nth-child(7)');
+                            var max = document.querySelector('section[data-unit='+label+'] div:first-child').appendChild( document.createElement('span') );
+                            max.classList.add('max');
                             max.textContent = p['$'].MaxSpawnedAtOnce;
                             max.setAttribute('contenteditable','true');
 
                             max.addEventListener('blur', function() {
-                                result.StructureData.Behaviors[0].Production[0].MaxSpawnedAtOnce = cost.textContent;
+                                result.StructureData.Behaviors[0].Production[0].MaxSpawnedAtOnce = max.textContent;
                                 editXML(result,sfile);
                             });
 
-                            // Build Time
-                            var bt = document.querySelector('tr[data-unit='+label+'] td:nth-child(8)');
+                            //Break
+                            //document.querySelector('section[data-unit='+label+'] div:nth-child(2)').appendChild( document.createElement('br') );
+
+                            //Build Time
+                            var bt = document.querySelector('section[data-unit='+label+'] .extra').appendChild( document.createElement('p') );
+                            bt.classList.add('bt');
                             bt.textContent = result.StructureData.BuildTime;
                             bt.setAttribute('contenteditable','true');
 
                             bt.addEventListener('blur', function() {
-                                result.StructureData.BuildTime = cost.textContent;
+                                result.StructureData.BuildTime = bt.textContent;
                                 editXML(result,sfile);
                             });
 
                             // Unit Build Time
-                            var pt = document.querySelector('tr[data-unit='+label+'] td:nth-child(9)');
+                            var pt = document.querySelector('section[data-unit='+label+'] .extra').appendChild( document.createElement('p') );
+                            pt.classList.add('pt');
                             pt.textContent = p['$'].ProductionTime;
                             pt.setAttribute('contenteditable','true');
 
                             pt.addEventListener('blur', function() {
-                                result.StructureData.Behaviors[0].Production[0].ProductionTime = cost.textContent;
+                                result.StructureData.Behaviors[0].Production[0].ProductionTime = pt.textContent;
                                 editXML(result,sfile);
                             });
                         }
@@ -183,13 +226,10 @@ function initEditor(contentDir) {
         }
     });
 
-    var weapons = walk('/data/weapons', function(error) {
+    weapons = walk('/data/weapons', function(error) {
         if (error) { throw error; } 
         else {
             weaponList = [];
-            var relDir = path.relative(__dirname,contentDir);
-            relDir = relDir.replace(/\\/g, '/');
-            console.log(relDir);
 
             weapons.forEach(function(wfile) {
                 weaponList.push(wfile);
@@ -205,7 +245,8 @@ function initEditor(contentDir) {
                             //console.log('Wfile is: '+wfile);
 
                             // Cast Time
-                            var cast = document.querySelector('tr[data-weapon='+neww+'] td:nth-child(3)');
+                            var cast = document.querySelector('section[data-weapon='+neww+'] .extra').appendChild( document.createElement('p') );
+                            cast.classList.add('cast')
                             cast.textContent = result.WeaponData.CastTime[0];
                             cast.setAttribute('contenteditable','true');
 
@@ -215,31 +256,75 @@ function initEditor(contentDir) {
                             });
 
                             // Cool Down
-                            var cool = document.querySelector('tr[data-weapon='+neww+'] td:nth-child(4)');
+                            var cool = document.querySelector('section[data-weapon='+neww+'] .extra').appendChild( document.createElement('p') );
+                            cool.classList.add('cool')
                             cool.textContent = result.WeaponData.CoolDown[0];
                             cool.setAttribute('contenteditable','true');
 
                             cool.addEventListener('blur', function() {
-                                result.WeaponData.CoolDown[0] = cost.textContent;
+                                result.WeaponData.CoolDown[0] = cool.textContent;
                                 editXML(result,wfile);
-                            });                        
+                            });   
+
+                            var wpn = document.querySelector('section[data-weapon='+neww+'] .weapons').appendChild( document.createElement('div') );
+
+                            var wpnTitle = wpn.appendChild(document.createElement('h5'));
+                            wpnTitle.textContent = neww;
+
+                            if (result.WeaponData.Events[0].Event[0].Response[0]['$'].Type === 'Damage') {
+                                var dmg = wpn.appendChild( document.createElement('span') );
+                                dmg.classList.add('dmg');
+                                dmg.textContent = result.WeaponData.Events[0].Event[0].Response[0]['$'].Value;
+                                dmg.setAttribute('contenteditable','true');
+
+                                dmg.addEventListener('blur', function() {
+                                    result.WeaponData.Events[0].Event[0].Response[0]['$'].Value = dmg.textContent;
+                                    editXML(result,wfile);
+                                }); 
+                            } else {
+                                var dmg = wpn.appendChild( document.createElement('span') );
+                                dmg.classList.add('dmg');
+                                dmg.setAttribute('data-bullet', result.WeaponData.Events[0].Event[0].Response[0]['$'].Data );
+                            }                 
                         }
                     });
                 });
             });
 
-            console.log( 'WEAPON LIST: '+wlist );
+            bullets = walk('/data/bullets', function(error) {
+                if (error) { throw error; } 
+                else {
+                    bulletList = [];
+
+                    bullets.forEach(function(bfile) {
+                        bulletList.push(bfile);
+                        var parser = new xml2js.Parser();
+
+                        fs.readFile(bfile, function(err, data) {
+                            parser.parseString(data, function (err, result) {
+                                //console.dir( JSON.stringify(result) );
+                                var bname = bfile.replace(relDir+'/data/bullets/','').replace('.xml','');
+
+                                bulletList.push(bfile);
+                                //console.log('bfile is: '+bfile);
+
+                                // Bullet Damage
+                                if ( document.querySelector('span[data-bullet='+bname+']') ) {
+                                    var bdmg = document.querySelector('span[data-bullet='+bname+']');
+                                    bdmg.classList.add('bdmg');
+                                    bdmg.textContent = result.BulletData.Events[0].Event[0].Response[0]['$'].Value;
+                                    bdmg.setAttribute('contenteditable','true');
+
+                                    bdmg.addEventListener('blur', function() {
+                                        result.BulletData.Events[0].Event[0].Response[0]['$'].Value = bdmg.textContent;
+                                        editXML(result,bfile);
+                                    }); 
+                                }        
+                            });
+                        });
+                    });
+                }
+            });
         }
     });
-
-    // Parse XML to JSON
-
-    // var atk = row.appendChild( document.createElement('td') );
-    // atk.textContent = obj.DisplayName;
-
-    // var aspd = row.appendChild( document.createElement('td') );
-    // aspd.textContent = obj.DisplayName;
-
-    // var rng = row.appendChild( document.createElement('td') );
-    // rng.textContent = obj.DisplayName;
 }
