@@ -1,0 +1,296 @@
+/*  http://meyerweb.com/eric/tools/css/reset/ 
+	v2.0 | 20110126
+	...combined with...
+	normalize.css v2.1.2 | MIT License | git.io/normalize
+
+	Modifications by: Brian Franco
+*/
+
+div,
+applet,
+object,
+iframe,
+abbr,
+acronym,
+address,
+big,
+cite,
+del,
+ins,
+s,
+small,
+strike,
+var,
+center,
+legend,
+details,
+embed,
+figure,
+figcaption,
+output,
+ruby,
+time {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+  display: block;
+  font-size: 100%;
+  font: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+audio,
+canvas,
+video {
+  border: 0 none;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+[hidden] {
+  display: none;
+}
+
+html {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+ol,
+ul,
+li {
+  font-size: 100%;
+  font: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+dl,
+dt,
+dd,
+tt,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
+  border: 0 none;
+  font-size: 100%;
+  font: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+p,
+blockquote,
+q {
+  margin: 0 0 10px;
+  padding: 0;
+}
+
+blockquote,
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+}
+
+code,
+kbd,
+pre,
+samp {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  font-family: monospace, serif;
+}
+
+pre {
+  white-space: pre-wrap;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:focus {
+  outline: thin dotted;
+}
+
+a:active,
+a:hover {
+  outline: 0;
+}
+
+a,
+span,
+img {
+  border: 0 none;
+  display: inline-block;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+b,
+strong {
+  font-weight: bold;
+}
+
+dfn,
+em {
+  font-style: italic;
+}
+
+mark {
+  background: #ff0;
+  color: #000;
+}
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+fieldset,
+form,
+label {
+  border: 0 none;
+  font-family: inherit;
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+button,
+input {
+  line-height: normal;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  margin: 0;
+  padding: 0;
+}
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+textarea {
+  overflow: auto;
+  vertical-align: top;
+}
+
+.cf:after {
+  content: " ";
+  clear: both;
+  display: table;
+}

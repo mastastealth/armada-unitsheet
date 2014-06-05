@@ -1,6 +1,7 @@
 var app = require('app');  // Module to control application life.
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
 var dialog = require('dialog');
+var ipc = require('ipc');
 
 // Report crashes to our server.
 require('crash-reporter').start();
@@ -19,14 +20,27 @@ app.on('window-all-closed', function() {
 // initialization and ready for creating browser windows.
 app.on('ready', function() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600});
+  mainWindow = new BrowserWindow({width: 800, height: 600, frame: false});
+  //mainWindow.$ = mainWindow.jQuery = require('js/jquery.min.js');
 
   // and load the index.html of the app.
   mainWindow.loadUrl('file://' + __dirname + '/index.html');
+  //mainWindow.$ = mainWindow.jQuery = require('js/jquery.min.js');
 
   dialog.showOpenDialog( { properties: [ 'openDirectory' ]}, function(filenames) {
     mainWindow.webContents.on('did-finish-load', function() {
       mainWindow.webContents.send('dir', filenames[0] );
+
+      ipc.on('closeWin', function(event, arg) {
+        if (arg === 'close') {
+          console.log('Closing...');
+          mainWindow.close();
+        } else if (arg === 'minm') {
+          mainWindow.minimize();
+        } else if (arg === 'maxm') { 
+          mainWindow.maximize(); 
+        } else { mainWindow.unmaximize(); }
+      });
     });
   });
 
