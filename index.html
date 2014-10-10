@@ -1,95 +1,97 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Armada Units</title>
-
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-
-	<!-- Optional theme -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-
-	<style>
-		#units { margin: 50px auto; max-width: 80%; }
-	</style>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    
+    <style>
+        .wrap { margin: 0 auto; width: 80%; }
+        table span {
+            background: #428BCA;
+            border-radius: 8px;
+            color: white;
+            display: inline-block;
+            line-height: 16px;
+            margin-right: 10px;
+            padding: 4px 8px;
+        }
+    </style>
 </head>
 <body>
-	<table id="units" class="table table-striped">
-		<tbody>
-			<tr>
-				<th>Name</th>
-				<th>HP</th>
-				<th>ATK</th>
-				<th>Atk Spd</th>
-				<th>Range</th>
-				<th>Cost</th>
-				<th>Max</th>
-				<th>Build Time</th>
-				<th>U. Build Time</th>
-			</tr>
-		</tbody>
-	</table>
+    <input type="file" id="files" name="files[]" directory multiple />
+    
+    <div class="wrap">
+        <table class="table table-striped" id="uList">
+           <thead>
+               <tr>
+                    <th>Name</th>
+                    <th>Damage</th>
+                    <th>HP</th>
+                    <th>Traits</th>
+                </tr>
+           </thead>
+            <tbody>
 
-	<script>
-		//Makes an asynch request, loading the getimages.php file
-        function callForUnits() {
-            //Create the request object
-            var httpReq = (window.XMLHttpRequest)?new XMLHttpRequest():new ActiveXObject("Microsoft.XMLHTTP");
+            </tbody>
+        </table>
+    </div>
+    
+    <script src='tablesort.min.js'></script>
 
-            //When it loads,
-            httpReq.onload = function() {
-                //Convert the result back into JSON
-                var result = JSON.parse(httpReq.responseText);
-                //Make table
-                printUnits(result);
-            }
+    <script>
+      var doc;
+      function handleFileSelect(evt) {
+        var files = evt.target.files; // FileList object
 
-            //Request the page
-            try {
-                httpReq.open("GET", "getunits.php", true);
-                httpReq.send(null);
-            } catch(e) {
-                console.log(e);
-            }
+        // Loop through the FileList and render image files as thumbnails.
+        for (var i = 0, f; f = files[i]; i++) {
+
+          // Only process image files.
+          if (!f.type.match('xml.*')) {
+            continue;
+          }
+
+          var reader = new FileReader();
+
+          // Closure to capture the file information.
+          reader.onload = (function(theFile) {
+            return function(e) {
+              // Render thumbnail.
+              var p = document.createElement('tr');
+              var parser = new DOMParser();
+              doc = parser.parseFromString(e.target.result, "text/xml");
+              var traits = '';
+                
+              for (var t=0;t<doc.documentElement.childNodes[7].childNodes.length;t++) { 
+                console.log( doc.documentElement.childNodes[7].childNodes[t].nodeType );
+                if (doc.documentElement.childNodes[7].childNodes[t].nodeType === 1) {
+                    traits += '<span>'+doc.documentElement.childNodes[7].childNodes[t].innerHTML+'</span>';
+                    console.log(doc.documentElement.childNodes[7].childNodes[t].innerHTML);
+                    console.log(traits);
+                }
+              }
+                
+              p.innerHTML = ['<td>',doc.documentElement.childNodes[1].innerHTML,'</td>',
+                            '<td>',doc.documentElement.childNodes[3].innerHTML,'</td>',
+                            '<td>',doc.documentElement.childNodes[5].innerHTML,'</td>',
+                            '<td>',traits,'</td>',]
+              .join('');
+                
+              document.querySelector('tbody').insertBefore(p, null);
+              //var doc = XmlDocument(e.target.result);
+              //console.log();
+            };
+          })(f);
+
+          // Read in the image file as a data URL.
+          reader.readAsText(f,"UTF-8");
         }
+                             
+        new Tablesort(document.getElementById('uList'));
+      }
 
-        function printUnits(arr) {
-        	for(var i=0;i<arr.length;i++){
-		        var obj = arr[i];
-
-		        var row = document.querySelector('#units tbody').appendChild( document.createElement('tr') );
-
-		        var name = row.appendChild( document.createElement('td') );
-		        name.textContent = obj.DisplayName;
-
-		        var hp = row.appendChild( document.createElement('td') );
-		        hp.textContent = obj.Health;
-
-		        // var atk = row.appendChild( document.createElement('td') );
-		        // atk.textContent = obj.DisplayName;
-
-		        // var aspd = row.appendChild( document.createElement('td') );
-		        // aspd.textContent = obj.DisplayName;
-
-		        // var rng = row.appendChild( document.createElement('td') );
-		        // rng.textContent = obj.DisplayName;
-
-		        // var cost = row.appendChild( document.createElement('td') );
-		        // cost.textContent = obj.DisplayName;
-
-		        // var max = row.appendChild( document.createElement('td') );
-		        // max.textContent = obj.DisplayName;
-
-		        // var bt = row.appendChild( document.createElement('td') );
-		        // bt.textContent = obj.DisplayName;
-
-		        // var ubt = row.appendChild( document.createElement('td') );
-		        // ubt.textContent = obj.DisplayName;
-		    }
-        }
-
-        callForUnits()
-	</script>
+      document.getElementById('files').addEventListener('change', handleFileSelect, false);
+    </script>
 </body>
 </html>
